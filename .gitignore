@@ -9,11 +9,17 @@
 krow
 .krow
 # Ignore response file
-**/.*.res.md
 
 # Ignore .env file
 .env
 .env.local
+
+# Ignore response folders
+# response folders will start with .res. prefix in the request folder but the the response files that are outside of the folder
+**/.res.**/
+
+# Commiting sample reposnse file for documentation
+!**.res.md
 
 # config file created for testing config.yaml from root
 config.yaml
