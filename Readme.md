@@ -25,7 +25,7 @@ curl -s https://raw.githubusercontent.com/st-osi/krow/main/install/linux-amd64.s
 ## Getting Started
 
 1. Create request yaml file
-2. Create .env or .env.local file if you want to use environment variables in your request file
+2. Create `.env` or `.env.local` file if you want to use environment variables in your request file
 3. Run `krow run <request-file>`
 
 ## Example Of Request File
@@ -33,7 +33,7 @@ curl -s https://raw.githubusercontent.com/st-osi/krow/main/install/linux-amd64.s
 ```yaml
 # File name: sample-post.yaml
 Name: Create Post
-URL: "${API_URL}/posts" # ${API_URL} is set on the environment file (.env or .env.local)
+URL: ${API_URL}/posts # ${API_URL} is set on the environment file (.env or .env.local)
 Method: POST # Request method (GET, POST, PUT, DELETE, PATCH)
 
 # Add Request Headers as needed

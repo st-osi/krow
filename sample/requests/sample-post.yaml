@@ -1,5 +1,5 @@
 Name: Create Post
-URL: "${API_URL}/posts"
+URL: ${API_URL}/posts
 Method: POST
 
 Headers:
