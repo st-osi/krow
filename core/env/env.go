@@ -21,7 +21,7 @@ func LoadEnv(config *app.Config) {
 	load(config)
 
 	// TODO: env side effects (need to find another place for this)
-	logLevel := os.Getenv("RESTLER_LOG_LEVEL")
+	logLevel := os.Getenv("KROW_LOG_LEVEL")
 	if logLevel == "DEBUG" {
 		logger.SetDebug()
 	}
@@ -43,7 +43,7 @@ func load(config *app.Config) {
 
 	err := godotenv.Load(envFiles...)
 	if err != nil {
-		fmt.Println("[restler info]: Error loading .env file: ", err)
+		fmt.Println("[krow info]: Error loading .env file: ", err)
 	}
 
 }
@@ -72,7 +72,7 @@ func GetCurrentEnvPath(a *app.App) string {
 func LoadEnvFileByName(envName string) error {
 	envPath := filepath.Join(utils.Pwd(), ".env."+envName)
 	if _, err := os.Stat(envPath); os.IsNotExist(err) {
-		logger.Debug("[restler error]: env file does not exist", "[error]", err)
+		logger.Debug("[krow error]: env file does not exist", "[error]", err)
 		return err
 	}
 
@@ -81,12 +81,12 @@ func LoadEnvFileByName(envName string) error {
 
 func OverLoadEnv(envPath string) error {
 	if _, err := os.Stat(envPath); os.IsNotExist(err) {
-		logger.Debug("[restler error]: env file does not exist", "[error]", err)
+		logger.Debug("[krow error]: env file does not exist", "[error]", err)
 		return err
 	}
 	err := godotenv.Overload(envPath)
 	if err != nil {
-		logger.Debug("[restler error]: env file can not be loaded", "[error]", err)
+		logger.Debug("[krow error]: env file can not be loaded", "[error]", err)
 	}
 	return nil
 }
@@ -153,7 +153,7 @@ func UpdateEnvFile(a *app.App, values map[string]interface{}) error {
 	return nil
 }
 
-func updateDotEnvFile(envPath, restlerPath string) error {
+func updateDotEnvFile(envPath, krowPath string) error {
 	file, err := os.Open(envPath)
 	if err != nil {
 		fmt.Println("[error]: Error occurred while opening .env file: ", err)
@@ -164,19 +164,19 @@ func updateDotEnvFile(envPath, restlerPath string) error {
 	// read the file line by line
 	scanner := bufio.NewScanner(file)
 	var lines []string
-	var restlerPathFound bool
+	var krowPathFound bool
 	for scanner.Scan() {
 		line := scanner.Text()
-		if strings.HasPrefix(line, "RESTLER_PATH") {
-			// update RESTLER_PATH in .env file
-			restlerPathFound = true
-			line = fmt.Sprintf("RESTLER_PATH=%s", restlerPath)
+		if strings.HasPrefix(line, "krow_PATH") {
+			// update krow_PATH in .env file
+			krowPathFound = true
+			line = fmt.Sprintf("krow_PATH=%s", krowPath)
 		}
 		lines = append(lines, line)
 	}
 
-	if !restlerPathFound {
-		lines = append(lines, "RESTLER_PATH="+restlerPath)
+	if !krowPathFound {
+		lines = append(lines, "krow_PATH="+krowPath)
 	}
 
 	if err := scanner.Err(); err != nil {

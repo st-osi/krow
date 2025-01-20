@@ -11,31 +11,31 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-const samplePostRequestUrl = "https://raw.githubusercontent.com/shrijan00003/restler/main/sample/requests/sample.post.yaml"
-const sampleGetRequestUrl = "https://raw.githubusercontent.com/shrijan00003/restler/main/sample/requests/sample.get.yaml"
-const samplePutRequestUrl = "https://raw.githubusercontent.com/shrijan00003/restler/main/sample/requests/sample.put.yaml"
-const sampleDeleteRequestUrl = "https://raw.githubusercontent.com/shrijan00003/restler/main/sample/requests/sample.delete.yaml"
-const samplePatchRequestUrl = "https://raw.githubusercontent.com/shrijan00003/restler/main/sample/requests/sample.patch.yaml"
+const samplePostRequestUrl = "https://raw.githubusercontent.com/st-osi/krow/main/sample/requests/sample.post.yaml"
+const sampleGetRequestUrl = "https://raw.githubusercontent.com/st-osi/krow/main/sample/requests/sample.get.yaml"
+const samplePutRequestUrl = "https://raw.githubusercontent.com/st-osi/krow/main/sample/requests/sample.put.yaml"
+const sampleDeleteRequestUrl = "https://raw.githubusercontent.com/st-osi/krow/main/sample/requests/sample.delete.yaml"
+const samplePatchRequestUrl = "https://raw.githubusercontent.com/st-osi/krow/main/sample/requests/sample.patch.yaml"
 
 // FIXME: this will not be needed
-var restlerPath = os.Getenv("RESTLER_PATH")
+var krowPath = os.Getenv("KROW_PATH")
 
 // -------------------------
-// Restler create command
+// krow create command
 // -------------------------
 // +++++++++++++++++++++++++
 // create collection
 // +++++++++++++++++++++++++
-func createRestlerCollection(c *cli.Context) error {
-	restlerPath := os.Getenv("RESTLER_PATH")
-	fmt.Println("[Restler Log]: Creating restler collection", c.Args().First())
-	// collection is basically restler structure
+func createKrowCollection(c *cli.Context) error {
+	krowPath := os.Getenv("KROW_PATH")
+	fmt.Println("[krow Log]: Creating krow collection", c.Args().First())
+	// collection is basically krow structure
 	// it will have env folder, config.yaml and sample request
-	collectionPath := fmt.Sprintf("%s/%s", restlerPath, c.Args().First())
+	collectionPath := fmt.Sprintf("%s/%s", krowPath, c.Args().First())
 	if _, err := os.Stat(collectionPath); os.IsNotExist(err) {
 		err := os.MkdirAll(collectionPath, 0755)
 		if err != nil {
-			return fmt.Errorf("[error]: Error occurred while creating restler collection: err: %s", err)
+			return fmt.Errorf("[error]: Error occurred while creating krow collection: err: %s", err)
 		}
 		err = createDefaultFiles(collectionPath)
 		if err != nil {
@@ -44,7 +44,7 @@ func createRestlerCollection(c *cli.Context) error {
 		}
 		return nil
 	} else {
-		fmt.Println("[info]: path exists, ignoring create restler collection")
+		fmt.Println("[info]: path exists, ignoring create krow collection")
 	}
 	return nil
 }
@@ -54,9 +54,9 @@ func createRestlerCollection(c *cli.Context) error {
 // +++++++++++++++++++++++++
 func createRequestFile(c *cli.Context) error {
 
-	// user should be able to create request file with action name like `restler c r post`
-	// or they can create request file with path like `restler c r collection1/collection2 post`
-	path := restlerPath
+	// user should be able to create request file with action name like `krow c r post`
+	// or they can create request file with path like `krow c r collection1/collection2 post`
+	path := krowPath
 	var action string
 	var fileName string
 	argsLen := c.Args().Len()
@@ -65,27 +65,27 @@ func createRequestFile(c *cli.Context) error {
 		return errors.New("action name is required (post, get, put, delete, patch)")
 	}
 	// if only one arg provided, it should be action name and it should create sample request file
-	// with action provided eg. <restler_path>/sample.post.yaml
+	// with action provided eg. <krow_path>/sample.post.yaml
 	if argsLen == 1 {
 		action = c.Args().Get(0)
 	}
 
 	// if two args provided, it should be path and action name
 	if argsLen == 2 {
-		path = fmt.Sprintf("%s/%s", restlerPath, c.Args().Get(0))
+		path = fmt.Sprintf("%s/%s", krowPath, c.Args().Get(0))
 		action = c.Args().Get(1)
 	}
 
 	// if three args provided, it should be path, action name and file name
 	if argsLen == 3 {
-		path = fmt.Sprintf("%s/%s", restlerPath, c.Args().Get(0))
+		path = fmt.Sprintf("%s/%s", krowPath, c.Args().Get(0))
 		action = c.Args().Get(1)
 		fileName = c.Args().Get(2)
 	}
 
-	// // if restler cr col1/col2 post article
+	// // if krow cr col1/col2 post article
 	if strings.Contains(action, "/") {
-		path = fmt.Sprintf("%s/%s", restlerPath, action)
+		path = fmt.Sprintf("%s/%s", krowPath, action)
 		action = c.Args().Get(1)
 		if action == "" {
 			return errors.New("action name is required (post, get, put, delete, patch)")

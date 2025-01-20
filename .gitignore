@@ -6,8 +6,8 @@
 .env.local
 
 
-restler
-.restler
+krow
+.krow
 # Ignore response file
 **/.*.res.md
 
