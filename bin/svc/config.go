@@ -1,17 +1,29 @@
 package svc
 
 import (
-	"github.com/shrijan00003/restler/core/app"
-	"github.com/shrijan00003/restler/core/utils"
+	"os"
+
+	"github.com/st-osi/krow/core/app"
+	"github.com/st-osi/krow/core/utils"
 )
 
 func LoadConfig() (*app.Config, error) {
 	config := &app.Config{}
 	configPath := utils.Pwd() + "/" + "config.yaml"
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		return config, err
+	}
 	err := utils.LoadWithYaml(configPath, config)
 	if err != nil {
-		return nil, err
+		return getDefaultConfig(), err
 	}
 
 	return config, nil
+}
+
+func getDefaultConfig() *app.Config {
+	return &app.Config{
+		Env:     "",
+		EnvPath: "",
+	}
 }

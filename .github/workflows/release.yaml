@@ -27,4 +27,4 @@ jobs:
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
           project_path: "./bin"
-          binary_name: "restler"
+          binary_name: "krow"

@@ -12,11 +12,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/shrijan00003/restler/bin/svc"
-	"github.com/shrijan00003/restler/core/app"
-	"github.com/shrijan00003/restler/core/env"
-	"github.com/shrijan00003/restler/core/logger"
-	"github.com/shrijan00003/restler/core/utils"
+	"github.com/st-osi/krow/bin/svc"
+	"github.com/st-osi/krow/core/app"
+	"github.com/st-osi/krow/core/env"
+	"github.com/st-osi/krow/core/logger"
+	"github.com/st-osi/krow/core/utils"
 	"gopkg.in/yaml.v3"
 
 	"github.com/urfave/cli/v2"
@@ -41,7 +41,7 @@ func (c *Config) Terminate() {
 
 const APP_VERSION = "v0.0.2-dev.0"
 
-var restlerPath string
+var krowPath string
 var a *app.App
 
 func main() {
@@ -54,7 +54,7 @@ func main() {
 // -------------------------
 
 // -------------------------
-// initialize restler project
+// initialize krow project
 // -------------------------
 func initialize() {
 	defer func() {
@@ -64,7 +64,7 @@ func initialize() {
 
 	logger.Init()
 
-	// load config.yaml file in the root of restler project
+	// load config.yaml file in the root of krow project
 	// TODO: support config flag to load config file from request
 	pConfig, _ := svc.LoadConfig()
 
@@ -77,7 +77,7 @@ func initialize() {
 func run() {
 	initialize()
 	app := &cli.App{
-		Name:    "Restler Application",
+		Name:    "krow Application",
 		Usage:   "Developer friendly rest client for developers only!!",
 		Version: APP_VERSION,
 		Commands: []*cli.Command{
@@ -113,32 +113,32 @@ func runAction(cCtx *cli.Context) error {
 	var reqPath = cCtx.Args().First()
 
 	if reqPath == "" {
-		log.Fatal("[Resterl Error]: Please provide request args like collection/request-name.yaml")
+		log.Fatal("[krow error]: Please provide request args like collection/request-name.yaml")
 	}
 
 	if _, err := os.Stat(reqPath); os.IsNotExist(err) {
-		log.Fatal("[Restler Error]: Request not found in path: ", reqPath)
+		log.Fatal("[krow error]: Request not found in path: ", reqPath)
 	}
 
 	pReq, err := svc.ParseRequest(reqPath)
 	if err != nil {
 		logger.Debug("error processing request:", err)
-		log.Fatal("[restler Error]: Error processing your request, make sure you have valid format")
+		log.Fatal("[krow error]: Error processing your request, make sure you have valid format")
 	}
 
 	pRes, err := svc.ProcessRequest(pReq, a)
 	if err != nil {
-		log.Fatal("[restler Error]: Error processing your request: ", err)
+		log.Fatal("[krow error]: Error processing your request: ", err)
 	}
 
 	body, err := utils.ReadBody(pRes)
 	if err != nil {
-		log.Fatal("[restler error]: Error reading response body, Send PR :D", err)
+		log.Fatal("[krow error]: Error reading response body, Send PR :D", err)
 	}
 
 	responseBytes, err := prepareResponse(pReq, pRes, body)
 	if err != nil {
-		log.Fatal("[restler Error]: We can't process your response, Fix and send PR :D", err)
+		log.Fatal("[krow error]: We can't process your response, Fix and send PR :D", err)
 	}
 
 	// TODO: update env file if only it exists
@@ -214,7 +214,7 @@ func updateEnvPostScript(req *svc.Request, res *http.Response, body []byte) {
 	err := env.UpdateEnvFile(a, newEnvMap)
 
 	if err != nil {
-		fmt.Println("[restler Log]: Failed to write env file: ", err)
+		fmt.Println("[krow log]: Failed to write env file: ", err)
 	}
 }
 

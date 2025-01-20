@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/shrijan00003/restler/core/app"
+	"github.com/st-osi/krow/core/app"
 	"gopkg.in/yaml.v3"
 )
 

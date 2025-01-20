@@ -1,6 +1,6 @@
 Name: Update Post
-URL: "{{API_URL}}/1"
-Method: PUT
+URL: ${API_URL}/1
+Method: PATCH
 
 Headers:
   Accept: text/html, application/json

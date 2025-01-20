@@ -6,12 +6,12 @@ import (
 
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/shrijan00003/restler/bin/svc"
-	"github.com/shrijan00003/restler/core/env"
+	"github.com/st-osi/krow/bin/svc"
+	"github.com/st-osi/krow/core/env"
 )
 
-// init restler project
-// init command should be able to set the RESTLER_PATH in .env file which will be loaded by restler.
+// init krow project
+// init command should be able to set the KROW_PATH in .env file which will be loaded by krow.
 // it should be creating default files and folders in the path.
 type textInputModel struct {
 	textInput textinput.Model
@@ -24,7 +24,7 @@ type (
 
 func initialTextInputModel() textInputModel {
 	ti := textinput.New()
-	ti.Placeholder = "restler"
+	ti.Placeholder = "krow"
 	ti.Focus()
 	ti.CharLimit = 156
 	ti.Width = 20
@@ -63,16 +63,16 @@ func (m textInputModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m textInputModel) View() string {
 	return fmt.Sprintf(
-		"Where do you want to initialize your restler project? \n\n%s\n\n%s",
+		"Where do you want to initialize your krow project? \n\n%s\n\n%s",
 		m.textInput.View(),
 		"(esc to quit)",
 	) + "\n"
 }
 
-func initRestlerProject() error {
+func initKrowProject() error {
 	p := tea.NewProgram(initialTextInputModel())
 	if _, err := p.Run(); err != nil {
-		fmt.Println("Error occurred while initializing restler project: ", err)
+		fmt.Println("Error occurred while initializing krow project: ", err)
 		return err
 	}
 	return nil
@@ -82,10 +82,10 @@ func initRestlerProject() error {
 func executeInitCommand(path string) error {
 	// if path exists, thats it, otherwise ask if user wants to create it
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		fmt.Println("[log]: Path doesn't exist, creating restler project in: ", path)
+		fmt.Println("[log]: Path doesn't exist, creating krow project in: ", path)
 		err := os.MkdirAll(path, 0755)
 		if err != nil {
-			fmt.Println("[error]: Error occurred while creating restler project: ", err)
+			fmt.Println("[error]: Error occurred while creating krow project: ", err)
 			return err
 		}
 		err = svc.CreateDefaultFile(path)
@@ -96,7 +96,7 @@ func executeInitCommand(path string) error {
 		env.UpdateEnv(path)
 		return nil
 	} else {
-		fmt.Println("[info]: path exists, updating RESTLER_PATH env: ")
+		fmt.Println("[info]: path exists, updating KROW_PATH env: ")
 		env.UpdateEnv(path)
 		return nil
 	}

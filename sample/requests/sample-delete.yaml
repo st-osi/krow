@@ -1,6 +1,6 @@
 Name: Get Posts
-URL: "{{API_URL}}"
-Method: GET
+URL: ${API_URL}/1
+Method: DELETE
 
 Headers:
   Accept: text/html, application/json

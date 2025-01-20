@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Variables
-REPO="shrijan00003/restler"
+REPO="st-osi/krow"
 VERSION="v0.0.2-dev.0"
-BINARY_NAME="restler"
+BINARY_NAME="krow"
 TAR_FILE="${BINARY_NAME}-${VERSION}-linux-amd64.tar.gz"
 DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${VERSION}/${TAR_FILE}"
 

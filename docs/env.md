@@ -1,6 +1,6 @@
 # Environment Support
 
-By default, Restler supports the `.env` and `.env.local` files as environment. The `.env.local` file have precedence over `.env` file.
+By default, krow supports the `.env` and `.env.local` files as environment. The `.env.local` file have precedence over `.env` file.
 The `.env` file is loaded first and then the `.env.local` file is loaded in case both are present. You can specify the environment to choose by
 setting `Env` and `EnvPath` in the `config.yaml` file in your root directory.
 
