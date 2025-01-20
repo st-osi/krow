@@ -1,4 +1,4 @@
-module github.com/shrijan00003/restler
+module github.com/st-osi/krow
 
 go 1.22.0
 

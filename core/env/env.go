@@ -8,9 +8,9 @@ import (
 	"strings"
 
 	"github.com/joho/godotenv"
-	"github.com/shrijan00003/restler/core/app"
-	"github.com/shrijan00003/restler/core/logger"
-	"github.com/shrijan00003/restler/core/utils"
+	"github.com/st-osi/krow/core/app"
+	"github.com/st-osi/krow/core/logger"
+	"github.com/st-osi/krow/core/utils"
 )
 
 func Terminate() {
@@ -36,7 +36,7 @@ func load(config *app.Config) {
 	for _, pattern := range envFilePatterns {
 		matchedFiles, err := filepath.Glob(os.ExpandEnv(pattern))
 		if err != nil {
-			fmt.Println("[Restler Log]: Error loading .env file: ", err)
+			fmt.Println("[krow Log]: Error loading .env file: ", err)
 		}
 		envFiles = append(envFiles, matchedFiles...)
 	}

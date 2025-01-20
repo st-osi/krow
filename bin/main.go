@@ -12,11 +12,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/shrijan00003/restler/bin/svc"
-	"github.com/shrijan00003/restler/core/app"
-	"github.com/shrijan00003/restler/core/env"
-	"github.com/shrijan00003/restler/core/logger"
-	"github.com/shrijan00003/restler/core/utils"
+	"github.com/st-osi/krow/bin/svc"
+	"github.com/st-osi/krow/core/app"
+	"github.com/st-osi/krow/core/env"
+	"github.com/st-osi/krow/core/logger"
+	"github.com/st-osi/krow/core/utils"
 	"gopkg.in/yaml.v3"
 
 	"github.com/urfave/cli/v2"

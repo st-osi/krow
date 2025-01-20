@@ -6,8 +6,8 @@ import (
 
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/shrijan00003/restler/bin/svc"
-	"github.com/shrijan00003/restler/core/env"
+	"github.com/st-osi/krow/bin/svc"
+	"github.com/st-osi/krow/core/env"
 )
 
 // init restler project
