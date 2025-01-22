@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/st-osi/krow/core/app"
+	"github.com/st-osi/krow/core/logger"
 	"gopkg.in/yaml.v3"
 )
 
@@ -107,14 +108,13 @@ func ProcessRequest(req *Request, app *app.App) (*http.Response, error) {
 	if req.Headers["Content-Type"] == "application/x-www-form-urlencoded" {
 		// this will have support for single nested layer
 		rawFormData := url.Values{}
-		fmt.Println(req.Body)
 		if reflect.TypeOf(req.Body).Kind() == reflect.Map {
 			for key, val := range req.Body.(map[string]interface{}) {
 				// Note: This structure only works if there is no nested values
 				// we should be iterating if type of value is map or list
 				value, ok := val.(string)
 				if !ok {
-					fmt.Println("[error] parsing body for [application/x-www-form-urlencoded]")
+					logger.Debug("[krow error] parsing body for [application/x-www-form-urlencoded]")
 				}
 				rawFormData.Add(key, value)
 			}

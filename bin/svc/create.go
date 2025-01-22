@@ -26,6 +26,7 @@ var krowPath = os.Getenv("KROW_PATH")
 // +++++++++++++++++++++++++
 // create collection
 // +++++++++++++++++++++++++
+
 func createKrowCollection(c *cli.Context) error {
 	krowPath := os.Getenv("KROW_PATH")
 	fmt.Println("[krow Log]: Creating krow collection", c.Args().First())
