@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/st-osi/krow/core/logger"
 	"gopkg.in/yaml.v3"
 )
 
@@ -133,7 +134,7 @@ func LoadWithYaml(configPath string, receiver interface{}) error {
 func ReadFile(path string) ([]byte, error) {
 	file, err := os.Open(path)
 	if err != nil {
-		fmt.Println("Error opening file", err)
+		logger.Debug("[krow error] | error opening file", "error", err)
 		return nil, err
 	}
 	defer file.Close()
