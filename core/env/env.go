@@ -21,7 +21,7 @@ func LoadEnv(config *app.Config) {
 	load(config)
 
 	// TODO: env side effects (need to find another place for this)
-	logLevel := os.Getenv("KROW_LOG_LEVEL")
+	logLevel := os.Getenv(strings.ToUpper(app.APP_NAME) + "_LOG_LEVEL")
 	if logLevel == "DEBUG" {
 		logger.SetDebug()
 	}
@@ -36,14 +36,14 @@ func load(config *app.Config) {
 	for _, pattern := range envFilePatterns {
 		matchedFiles, err := filepath.Glob(os.ExpandEnv(pattern))
 		if err != nil {
-			fmt.Println("[krow Log]: Error loading .env file: ", err)
+			logger.Debug("[krow Log]: Error loading .env file: ", "error", err)
 		}
 		envFiles = append(envFiles, matchedFiles...)
 	}
 
 	err := godotenv.Load(envFiles...)
 	if err != nil {
-		fmt.Println("[krow info]: Error loading .env file: ", err)
+		logger.Debug("[krow info]: Error loading .env file: ", "err", err)
 	}
 
 }
@@ -72,7 +72,7 @@ func GetCurrentEnvPath(a *app.App) string {
 func LoadEnvFileByName(envName string) error {
 	envPath := filepath.Join(utils.Pwd(), ".env."+envName)
 	if _, err := os.Stat(envPath); os.IsNotExist(err) {
-		logger.Debug("[krow error]: env file does not exist", "[error]", err)
+		logger.Debug("[krow error]: env file does not exist", "error", err)
 		return err
 	}
 
@@ -81,12 +81,12 @@ func LoadEnvFileByName(envName string) error {
 
 func OverLoadEnv(envPath string) error {
 	if _, err := os.Stat(envPath); os.IsNotExist(err) {
-		logger.Debug("[krow error]: env file does not exist", "[error]", err)
+		logger.Debug("[krow error]: env file does not exist", "error", err)
 		return err
 	}
 	err := godotenv.Overload(envPath)
 	if err != nil {
-		logger.Debug("[krow error]: env file can not be loaded", "[error]", err)
+		logger.Debug("[krow error]: env file can not be loaded", "error", err)
 	}
 	return nil
 }
@@ -98,9 +98,9 @@ func GetEnv(key string) string {
 func UpdateEnv(path string) error {
 	dotEnvPath, err := findDotEnvFile()
 	if err != nil {
-		fmt.Println("[log]: env file .env or .env.local not found, creating .env file :")
+		logger.Debug("[log]: env file .env or .env.local not found, creating .env file :")
 		if _, err := os.Create(".env"); err != nil {
-			fmt.Println("[error]: Error occurred while creating .env file: ", err)
+			logger.Debug("[error]: Error occurred while creating .env file: ", "error", err)
 			return err
 		}
 		dotEnvPath = ".env"
@@ -112,13 +112,13 @@ func UpdateEnv(path string) error {
 func UpdateEnvFile(a *app.App, values map[string]interface{}) error {
 	envPath := GetCurrentEnvPath(a)
 	if envPath == "" {
-		fmt.Println("[error]: Env file path not found")
+		logger.Debug("[error]: Env file path not found")
 		return fmt.Errorf("env file path not found")
 	}
 
 	file, err := os.Open(envPath)
 	if err != nil {
-		fmt.Println("[error]: Error occurred while opening .env file: ", err)
+		logger.Debug("[error]: Error occurred while opening .env file: ", "error", err)
 		return err
 	}
 	defer file.Close()
@@ -156,7 +156,7 @@ func UpdateEnvFile(a *app.App, values map[string]interface{}) error {
 func updateDotEnvFile(envPath, krowPath string) error {
 	file, err := os.Open(envPath)
 	if err != nil {
-		fmt.Println("[error]: Error occurred while opening .env file: ", err)
+		logger.Debug("[error]: Error occurred while opening .env file: ", "error", err)
 		return err
 	}
 	defer file.Close()

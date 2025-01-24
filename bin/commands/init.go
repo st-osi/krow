@@ -8,6 +8,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/st-osi/krow/bin/svc"
 	"github.com/st-osi/krow/core/env"
+	"github.com/st-osi/krow/core/logger"
 )
 
 // init krow project
@@ -72,7 +73,7 @@ func (m textInputModel) View() string {
 func initKrowProject() error {
 	p := tea.NewProgram(initialTextInputModel())
 	if _, err := p.Run(); err != nil {
-		fmt.Println("Error occurred while initializing krow project: ", err)
+		logger.Debug("Error occurred while initializing krow project: ", "err", err)
 		return err
 	}
 	return nil
@@ -82,21 +83,20 @@ func initKrowProject() error {
 func executeInitCommand(path string) error {
 	// if path exists, thats it, otherwise ask if user wants to create it
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		fmt.Println("[log]: Path doesn't exist, creating krow project in: ", path)
+		logger.Debug("[log]: Path doesn't exist, creating krow project in: ", "path", path)
 		err := os.MkdirAll(path, 0755)
 		if err != nil {
-			fmt.Println("[error]: Error occurred while creating krow project: ", err)
+			logger.Debug("[error]: Error occurred while creating krow project: ", "err", err)
 			return err
 		}
 		err = svc.CreateDefaultFile(path)
 		if err != nil {
-			fmt.Println("[error]: Error occurred while creating default files: ", err)
+			logger.Debug("[error]: Error occurred while creating default files: ", "err", err)
 			return err
 		}
 		env.UpdateEnv(path)
 		return nil
 	} else {
-		fmt.Println("[info]: path exists, updating KROW_PATH env: ")
 		env.UpdateEnv(path)
 		return nil
 	}

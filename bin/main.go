@@ -39,7 +39,7 @@ func (c *Config) Terminate() {
 	c = nil
 }
 
-const APP_VERSION = "v0.0.2-dev.0"
+const APP_VERSION = "v0.0.2-dev.1"
 
 var krowPath string
 var a *app.App
@@ -122,7 +122,7 @@ func runAction(cCtx *cli.Context) error {
 
 	pReq, err := svc.ParseRequest(reqPath)
 	if err != nil {
-		logger.Debug("error processing request:", err)
+		logger.Debug("[error] processing request:", "error", err)
 		log.Fatal("[krow error]: Error processing your request, make sure you have valid format")
 	}
 
@@ -185,13 +185,13 @@ func updateEnvPostScript(req *svc.Request, res *http.Response, body []byte) {
 		if envBodyKey != "" {
 			err := json.Unmarshal(body, &jsonBody)
 			if err != nil {
-				fmt.Println("[Update Env Log ] Body is not in JSON format: ", err)
+				logger.Debug("[update env log] | Body is not in JSON format: ", "error", err)
 				return
 			}
 			if val, ok := utils.GetNestedValue(jsonBody, envBodyKey); ok {
 				envBodyValueMap[envKey] = fmt.Sprintf("%v", val)
 			} else {
-				fmt.Println("[Update Env Log] Value not found for key: ", envBodyKey)
+				logger.Debug("[update env log] | Value not found for key: ", "envBodyKey", envBodyKey)
 				envBodyValueMap[envKey] = ""
 			}
 		}
@@ -202,7 +202,7 @@ func updateEnvPostScript(req *svc.Request, res *http.Response, body []byte) {
 		if val, ok := utils.GetNestedValue(headerMap, envHeaderKey); ok {
 			envHeaderValueMap[envKey] = fmt.Sprintf("%v", val)
 		} else {
-			fmt.Println("[Update Env Log] Value not found for key: ", envHeaderKey)
+			logger.Debug("[update env log] | Value not found for key: ", "envHeaderKey", envHeaderKey)
 			envHeaderValueMap[envKey] = ""
 		}
 	}
@@ -214,7 +214,7 @@ func updateEnvPostScript(req *svc.Request, res *http.Response, body []byte) {
 	err := env.UpdateEnvFile(a, newEnvMap)
 
 	if err != nil {
-		fmt.Println("[krow log]: Failed to write env file: ", err)
+		logger.Debug("[krow log]: Failed to write env file: ", "error", err)
 	}
 }
 
@@ -234,11 +234,11 @@ func prepareResponse(req *svc.Request, res *http.Response, body []byte) ([]byte,
 	buffer.WriteString("## Request Time\n")
 	buffer.WriteString(a.RequestTime.String())
 	buffer.WriteString("\n\n## Response Header: \n")
-
+	buffer.WriteString("```bash")
 	for key, value := range res.Header {
 		buffer.WriteString(fmt.Sprintf("%s: %s\n", key, value))
 	}
-	buffer.WriteString("\n\n")
+	buffer.WriteString("```\n\n")
 	buffer.WriteString("## Response Body: \n")
 	buffer.WriteString("```json\n")
 	buffer.Write(body)
