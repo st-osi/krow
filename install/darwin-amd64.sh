@@ -3,7 +3,7 @@
 # Install for MacOS x86_64 architecture
 # Variables
 REPO="st-osi/krow"
-VERSION="v0.0.2-dev.2"
+VERSION="v0.0.2-dev.3"
 BINARY_NAME="krow"
 TAR_FILE="${BINARY_NAME}-${VERSION}-darwin-amd64.tar.gz"
 DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${VERSION}/${TAR_FILE}"
