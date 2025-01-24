@@ -118,7 +118,7 @@ func UpdateEnvFile(a *app.App, values map[string]interface{}) error {
 
 	file, err := os.Open(envPath)
 	if err != nil {
-		logger.Debug("[error]: Error occurred while opening .env file: ", "error", err)
+		logger.Debug("[error]: Error occurred while opening .env file: ", "envPath", envPath)
 		return err
 	}
 	defer file.Close()
