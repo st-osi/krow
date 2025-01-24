@@ -23,3 +23,5 @@ krow
 
 # config file created for testing config.yaml from root
 config.yaml
+# Mac based files
+.DS_store
