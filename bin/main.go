@@ -39,7 +39,7 @@ func (c *Config) Terminate() {
 	c = nil
 }
 
-const APP_VERSION = "v0.0.2-dev.1"
+const APP_VERSION = "v0.0.2-dev.2"
 
 var krowPath string
 var a *app.App
